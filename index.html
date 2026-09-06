@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Startpage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style2.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.min.js"></script>
+    <link rel="preload" as="image" href="./icon/hello.webp">
+</head>
+<body>
+
+    <div id="overlay" class="overlay"></div>
+
+    <div id="menu-btn" class="menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <aside id="sidebar" class="sidebar closed">
+        <div class="sidebar-header">
+            <h3>Favoris</h3>
+            <button id="add-sidebar-cat-btn" class="btn-small">+ Catégorie</button>
+        </div>
+        <div id="sidebar-content" class="sidebar-content"></div>
+    </aside>
+
+    <main class="container">
+        <div class="logo-container">
+            <div class="logo"></div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <button class="search-engine-icon" id="se-toggle">
+                    <img id="current-se-icon" src="https://www.google.com/favicon.ico" alt="Engine">
+                </button>
+                <form id="search-form" action="https://www.google.com/search" method="get">
+                    <input type="text" name="q" id="search-input" class="search-input" placeholder="Rechercher..." autocomplete="off">
+                </form>
+                <button class="search-submit">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+            
+            <ul id="search-suggestions" class="suggestions-dropdown hidden"></ul>
+
+            <ul id="se-dropdown" class="se-dropdown hidden">
+                <li data-url="https://www.google.com/search" data-name="q" data-icon="https://www.google.com/favicon.ico">Google</li>
+                <li data-url="https://duckduckgo.com/" data-name="q" data-icon="https://duckduckgo.com/favicon.ico">DuckDuckGo</li>
+                <li data-url="https://www.bing.com/search" data-name="q" data-icon="https://www.bing.com/favicon.ico">Bing</li>
+            </ul>
+        </div>
+
+        <div class="quick-links-container">
+            <ul id="quick-links" class="quick-links"></ul>
+            <div class="add-quick-btn-container">
+                 <button id="add-quick-btn" title="Ajouter un lien rapide">+</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="top-actions">
+        <button id="settings-btn" class="icon-btn" title="Réglages">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+    </div>
+
+    <div id="modal-settings" class="modal hidden">
+        <div class="modal-content settings-wide">
+            <h3>Configuration</h3>
+            
+            <div class="modal-sections">
+                <div class="settings-inputs">
+                    <label>Image du logo (au-dessus de la recherche)</label>
+                    <input type="text" id="input-logo-url" placeholder="./icon/hello.webp ou URL HTTPS">
+                    
+                    <label style="margin-top: 10px;">Fond d'écran (URL de l'image)</label>
+                    <input type="text" id="input-bg-url" placeholder="https://exemple.com/image.jpg">
+                </div>
+
+                <div class="action-group">
+                    <button id="btn-export-file" class="btn-secondary-outline">Exporter .json</button>
+                    <label for="input-import-file" class="btn-secondary-outline">Importer .json</label>
+                    <input type="file" id="input-import-file" accept=".json" style="display:none;">
+                </div>
+
+                <div class="modal-actions">
+                    <button id="btn-reset" class="btn-danger-link">Réinitialiser</button>
+                    <div class="main-btns">
+                        <button id="btn-save-settings" class="btn-primary">Enregistrer</button>
+                        <button id="btn-close-settings" class="btn-secondary">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-editor" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modal-title">Éditer le lien</h3>
+            <input type="hidden" id="modal-id"><input type="hidden" id="modal-type"><input type="hidden" id="modal-category">
+            <label>Titre</label><input type="text" id="input-title">
+            <label>URL</label><input type="text" id="input-url">
+            <label>Icone</label><input type="text" id="input-icon">
+            <div class="modal-actions">
+                <button id="btn-cancel" class="btn-secondary">Annuler</button>
+                <button id="btn-save" class="btn-primary">Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="context-menu" class="context-menu hidden">
+        <div class="context-item" id="ctx-edit">Modifier</div>
+        <div class="context-item delete" id="ctx-delete">Supprimer</div>
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+</html>
